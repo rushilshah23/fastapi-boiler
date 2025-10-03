@@ -1,0 +1,47 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# OS / IDE files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Tests (exclude unless you run them inside Docker)
+tests/
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+.dockerignore
+
+# Env files (secrets should not go inside image!)
+*.env
+# !dev.env   # if you want to keep only dev.env, like we discussed earlier
+
+# Node stuff (if you have frontend in same repo)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Other
+coverage/

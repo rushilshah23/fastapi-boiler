@@ -1,0 +1,6 @@
+[submodule "common-python-directory"]
+	path = common-python-directory
+	url = https://github.com/rushilshah23/common-python-directory.git
+[submodule "common"]
+	path = common
+	url = https://github.com/rushilshah23/common-python-directory.git
