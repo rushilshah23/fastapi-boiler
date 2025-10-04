@@ -3,7 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from common.helpers.response import CustomResponse
 from common.helpers.status_codes import StatusCodes
 from dotenv import load_dotenv
-load_dotenv(dotenv_path="./envs/.env")
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+ENV_PATH = BASE_DIR / "envs" / ".env"
+load_dotenv(dotenv_path=ENV_PATH)
 from common.configs.env import CommonConfig
 
 def create_app():
