@@ -9,7 +9,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = BASE_DIR / "envs" / ".env"
 load_dotenv(dotenv_path=ENV_PATH)
+
 from common.configs.env import CommonConfig
+from src.utils.security import SecurityHeadersMiddleware
+from starlette_csrf import CSRFMiddleware 
+
 
 def create_app():
     app = FastAPI(
@@ -26,10 +30,14 @@ def create_app():
         allow_methods=["*"],    # or restrict ["GET", "POST"]
         allow_headers=["*"],    # or restrict ["Authorization", "Content-Type"]
     )
+    app.add_middleware(SecurityHeadersMiddleware)
+    app.add_middleware(CSRFMiddleware, secret=CommonConfig.CSRF_SECRET_KEY,cookie_name="csrf_token", header_name="X-CSRF-Token")
+
 
     @app.get("/health")
     def health_check():
         return CustomResponse(status_code=StatusCodes.HTTP_200_OK, message=f"FAST API Boiler - {CommonConfig.ENVIRONMENT} is healthy").to_dict()
-    
+
+
 
     return app
