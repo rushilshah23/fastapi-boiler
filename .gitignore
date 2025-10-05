@@ -126,3 +126,4 @@ secrets.json
 
 
 !**/dev.env
+!**/test.env
