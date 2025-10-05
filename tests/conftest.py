@@ -9,7 +9,6 @@ from pathlib import Path
 warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / "envs" / ".env")         # default
 load_dotenv(BASE_DIR / "envs" / "test.env", override=True)  # override with test env
 
 @pytest.fixture(scope="module")
