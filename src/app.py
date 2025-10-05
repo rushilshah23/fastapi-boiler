@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from common.helpers.response import CustomResponse
+from src.helpers.custom_response import CustomResponse
 from common.helpers.status_codes import StatusCodes
 from dotenv import load_dotenv
 from pathlib import Path
@@ -34,10 +34,14 @@ def create_app():
     app.add_middleware(CSRFMiddleware, secret=CommonConfig.CSRF_SECRET_KEY,cookie_name="csrf_token", header_name="X-CSRF-Token")
 
 
-    @app.get("/health")
+    router = APIRouter(prefix="/api")
+
+    @router.get("/health")
     def health_check():
-        return CustomResponse(status_code=StatusCodes.HTTP_200_OK, message=f"FAST API Boiler - {CommonConfig.ENVIRONMENT} is healthy").to_dict()
+        return CustomResponse(status_code=StatusCodes.HTTP_200_OK.value, message=f"FAST API Boiler - {CommonConfig.ENVIRONMENT} is healthy")
 
 
+    app.include_router(router=router)
 
+    
     return app
