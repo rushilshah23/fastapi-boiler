@@ -15,7 +15,6 @@ class CustomResponse(JSONResponse):
         meta: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, str]] = None,
     ):
-        # Standard response body
         body = {
             "status": status,
             "status_code": status_code,
@@ -30,3 +29,25 @@ class CustomResponse(JSONResponse):
         }
 
         super().__init__(content=body, status_code=status_code, headers=headers)
+
+    # ---------- Static Helper Methods ---------- #
+
+    @staticmethod
+    def success(message: str = "", data: Any = None, status_code: int = 200):
+        """Helper to create success responses."""
+        return CustomResponse(
+            status="success",
+            message=message,
+            data=data,
+            status_code=status_code
+        )
+
+    @staticmethod
+    def error(message: str = "", error: Any = None, status_code: int = 400):
+        """Helper to create error responses."""
+        return CustomResponse(
+            status="error",
+            message=message,
+            error=error,
+            status_code=status_code
+        )
