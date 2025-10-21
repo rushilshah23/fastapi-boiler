@@ -16,6 +16,14 @@ class CustomResponse(JSONResponse):
         meta: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, str]] = None,
     ):
+        self.status = status
+        self.status_code = status_code
+        self.message = message
+        self.data = data
+        self._error = error
+        self.meta = meta
+        self._headers = headers
+        
         request_id = correlation_id.get() or "N/A"
 
         body = {
@@ -53,4 +61,18 @@ class CustomResponse(JSONResponse):
             message=message,
             error=error,
             status_code=status_code
+        )
+        
+    @classmethod
+    def from_dict(cls, data: dict):
+        """
+        Create a CustomResponse from a dictionary (e.g., from resp.json()).
+        """
+        return cls(
+            status=data.get("status", "success"),
+            status_code=data.get("status_code", 200),
+            message=data.get("message", ""),
+            data=data.get("data"),
+            error=data.get("error"),
+            meta=data.get("meta"),
         )
