@@ -20,7 +20,7 @@ logger = get_logger(__name__)
 from prometheus_fastapi_instrumentator import Instrumentator
 from asgi_correlation_id import CorrelationIdMiddleware
 # from asgi_correlation_id import correlation_id
-
+from src.utils.json_logging import JSONLoggingMiddleware
 
 def create_app():
     app = FastAPI(
@@ -38,9 +38,11 @@ def create_app():
         allow_methods=["*"],    # or restrict ["GET", "POST"]
         allow_headers=["*"],    # or restrict ["Authorization", "Content-Type"]
     )
-    app.add_middleware(SecurityHeadersMiddleware)
-    app.add_middleware(CSRFMiddleware, secret=CommonConfig.CSRF_SECRET_KEY,cookie_name="csrf_token", header_name="X-CSRF-Token")
+    app.add_middleware(JSONLoggingMiddleware)
     app.add_middleware(CorrelationIdMiddleware)
+    app.add_middleware(CSRFMiddleware, secret=CommonConfig.CSRF_SECRET_KEY,cookie_name="csrf_token", header_name="X-CSRF-Token")
+    app.add_middleware(SecurityHeadersMiddleware)
+    
 
     Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
