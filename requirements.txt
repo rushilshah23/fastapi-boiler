@@ -1,5 +1,6 @@
 annotated-types==0.7.0
 anyio==4.11.0
+asgi-correlation-id==4.3.4
 certifi==2025.8.3
 cffi==2.0.0
 charset-normalizer==3.4.3
@@ -34,6 +35,8 @@ nh3==0.3.0
 packaging==25.0
 pkginfo==1.10.0
 pluggy==1.6.0
+prometheus-fastapi-instrumentator==7.1.0
+prometheus_client==0.23.1
 pycparser==2.23
 pydantic==2.11.9
 pydantic_core==2.33.2
@@ -42,6 +45,7 @@ pytest==8.4.2
 pytest-asyncio==1.2.0
 pytest-cov==7.0.0
 python-dotenv==1.1.1
+python-json-logger==4.0.0
 python-multipart==0.0.20
 PyYAML==6.0.3
 readme_renderer==44.0
@@ -69,3 +73,4 @@ watchfiles==1.1.0
 websockets==15.0.1
 wheel==0.43.0
 zipp==3.23.0
+
