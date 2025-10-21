@@ -1,7 +1,8 @@
 from fastapi.responses import JSONResponse
 from typing import Any, Optional, Dict
 import datetime
-import uuid
+# import uuid
+from asgi_correlation_id import correlation_id
 
 
 class CustomResponse(JSONResponse):
@@ -15,6 +16,8 @@ class CustomResponse(JSONResponse):
         meta: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, str]] = None,
     ):
+        request_id = correlation_id.get() or "N/A"
+
         body = {
             "status": status,
             "status_code": status_code,
@@ -23,7 +26,7 @@ class CustomResponse(JSONResponse):
             "error": error,
             "meta": {
                 "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                "request_id": str(uuid.uuid4()),
+                "request_id": request_id,
                 **(meta or {})
             }
         }

@@ -1,5 +1,5 @@
-from .sample import sample_api
+from .service import service_api
 
 __all__ = (
-    sample_api
+    service_api
 )

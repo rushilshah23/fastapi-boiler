@@ -14,6 +14,13 @@ from common.configs.env import CommonConfig
 from src.utils.security import SecurityHeadersMiddleware
 from starlette_csrf import CSRFMiddleware 
 
+from common.utils.logger import get_logger
+logger = get_logger(__name__)
+
+from prometheus_fastapi_instrumentator import Instrumentator
+from asgi_correlation_id import CorrelationIdMiddleware
+# from asgi_correlation_id import correlation_id
+
 
 def create_app():
     app = FastAPI(
@@ -33,18 +40,21 @@ def create_app():
     )
     app.add_middleware(SecurityHeadersMiddleware)
     app.add_middleware(CSRFMiddleware, secret=CommonConfig.CSRF_SECRET_KEY,cookie_name="csrf_token", header_name="X-CSRF-Token")
+    app.add_middleware(CorrelationIdMiddleware)
 
+    Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
     router = APIRouter(prefix="/api")
 
     @app.get("/health")
     def health_check():
+        logger.warning({"message":"Health chek success"})
         return CustomResponse(status_code=status.HTTP_200_OK, message=f"FAST API Boiler - {CommonConfig.ENVIRONMENT} is healthy")
 
     
     
-    from api import sample_api
-    app.mount(path="/sample_api", app=sample_api)
+    from api import service_api
+    app.mount(path="/sample_api", app=service_api)
     
 
     app.include_router(router=router)
