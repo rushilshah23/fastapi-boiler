@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, status
 from fastapi.middleware.cors import CORSMiddleware
 from src.helpers.custom_response import CustomResponse
 from common.helpers.status_codes import StatusCodes
@@ -19,7 +19,8 @@ def create_app():
     app = FastAPI(
         docs_url=None if CommonConfig.ENVIRONMENT=="PRODUCTION" else "/docs",
         redoc_url=None if CommonConfig.ENVIRONMENT=="PRODUCTION"  else "/redoc",
-        openapi_url=None if CommonConfig.ENVIRONMENT=="PRODUCTION"  else "/openapi.json"        
+        openapi_url=None if CommonConfig.ENVIRONMENT=="PRODUCTION"  else "/openapi.json",
+        root_path="/api"       
     )
     origins = CommonConfig.ALLOWED_ORIGINS
 
@@ -36,12 +37,16 @@ def create_app():
 
     router = APIRouter(prefix="/api")
 
-    @router.get("/health")
+    @app.get("/health")
     def health_check():
-        return CustomResponse(status_code=StatusCodes.HTTP_200_OK.value, message=f"FAST API Boiler - {CommonConfig.ENVIRONMENT} is healthy")
+        return CustomResponse(status_code=status.HTTP_200_OK, message=f"FAST API Boiler - {CommonConfig.ENVIRONMENT} is healthy")
 
+    
+    
+    from api import sample_api
+    app.mount(path="/sample_api", app=sample_api)
+    
 
     app.include_router(router=router)
-
     
     return app
